@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Store — Next-Gen E-Commerce</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader-logo">NEXUS STORE</div>
+    <div class="loader-bar"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-inner container-fluid px-md-5">
+      <a href="index.html" class="nav-logo">
+        <i class="fa-solid fa-cube me-2"></i>NEXUS STORE
+      </a>
+
+      <!-- Search Bar -->
+      <div class="nav-search d-none d-lg-block">
+        <span class="nav-search-icon"><i class="fas fa-search"></i></span>
+        <input type="text" id="nav-search-input" placeholder="Search futuristic products...">
+      </div>
+
+      <!-- Links -->
+      <ul class="nav-links d-none d-lg-flex mb-0 ps-0">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="cart.html" class="nav-link">Cart</a></li>
+        <li><a href="profile.html" class="nav-link">Profile</a></li>
+      </ul>
+
+      <!-- Actions -->
+      <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="nav-btn" title="Toggle Theme">
+          <i class="fas fa-sun"></i>
+        </button>
+
+        <!-- Cart Nav Button -->
+        <a href="cart.html" class="nav-btn cart-nav-btn" title="View Cart">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-badge">0</span>
+        </a>
+
+        <!-- Sign In Button -->
+        <a href="profile.html" class="nav-btn-primary d-none d-sm-inline-block">
+          Sign In
+        </a>
+
+        <!-- Hamburger for Mobile -->
+        <button class="hamburger d-lg-none" aria-label="Toggle Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav">
+    <!-- Search inside mobile menu -->
+    <div class="position-relative mb-4">
+      <span class="nav-search-icon" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-3);"><i class="fas fa-search"></i></span>
+      <input type="text" id="mobile-search-input" class="w-100" style="padding: 0.6rem 1rem 0.6rem 2.8rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 50px; color: var(--text-1);" placeholder="Search products..." onkeydown="if(event.key === 'Enter') { window.location.href = 'shop.html?search=' + encodeURIComponent(this.value); }">
+    </div>
+    <ul class="ps-0 mb-4">
+      <li><a href="index.html" class="nav-link active">Home</a></li>
+      <li><a href="shop.html" class="nav-link">Shop</a></li>
+      <li><a href="cart.html" class="nav-link">Cart</a></li>
+      <li><a href="profile.html" class="nav-link">Profile</a></li>
+    </ul>
+    <a href="profile.html" class="btn btn-primary w-100 justify-content-center">Sign In</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="container-fluid hero-content px-md-5">
+      <div class="hero-left text-start">
+        <div class="hero-tag">
+          NEXT-GEN COMMERCE IS HERE
+        </div>
+        <h1 class="hero-title">
+          The Future of <br>
+          <span class="gradient-text">Shopping</span>
+        </h1>
+        <p class="hero-sub">
+          Step into a curated futuristic shopping experience. Discover, explore, and acquire high-end, premium gadgets, clothing, and home gear built for tomorrow.
+        </p>
+        <div class="hero-cta">
+          <a href="shop.html" class="btn btn-primary">
+            Explore Shop <i class="fas fa-arrow-right ms-1"></i>
+          </a>
+          <a href="#featured" class="btn btn-ghost">
+            View Offers
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">50K+</div>
+            <div class="hero-stat-label">Happy Users</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">120+</div>
+            <div class="hero-stat-label">Ultra Brands</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">99.9%</div>
+            <div class="hero-stat-label">Satisfaction</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right d-none d-xl-flex">
+        <div class="hero-showcase">
+          <div class="hero-card-main">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80" alt="Aurora Pro Headphones" class="hero-product-img">
+            <div class="hero-product-info">
+              <div class="name">Aurora Pro Headphones</div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div class="price">$299.00</div>
+                <div class="stars">★ ★ ★ ★ ★</div>
+              </div>
+            </div>
+          </div>
+          <div class="floating-card offer">
+            <i class="fa-solid fa-bolt me-1"></i> 20% OFF — CODE: NEXUS20
+          </div>
+          <div class="floating-card shipping">
+            <i class="fa-solid fa-truck me-1"></i> FREE GLOBAL SHIPPING
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Categories</span>
+        <h2 class="section-title">Browse by <span>Department</span></h2>
+        <p class="section-sub">Explore our curated collections crafted with absolute precision.</p>
+      </div>
+      
+      <div class="categories-grid">
+        <!-- Category 1 -->
+        <div class="category-card" onclick="window.location.href='shop.html?category=Electronics'">
+          <span class="category-icon">💻</span>
+          <div class="category-name">Electronics</div>
+          <div class="category-count">1,240 Products</div>
+        </div>
+        <!-- Category 2 -->
+        <div class="category-card" onclick="window.location.href='shop.html?category=Fashion'">
+          <span class="category-icon">👕</span>
+          <div class="category-name">Fashion</div>
+          <div class="category-count">850 Products</div>
+        </div>
+        <!-- Category 3 -->
+        <div class="category-card" onclick="window.location.href='shop.html?category=Beauty'">
+          <span class="category-icon">✨</span>
+          <div class="category-name">Beauty</div>
+          <div class="category-count">620 Products</div>
+        </div>
+        <!-- Category 4 -->
+        <div class="category-card" onclick="window.location.href='shop.html?category=Home'">
+          <span class="category-icon">🪴</span>
+          <div class="category-name">Home</div>
+          <div class="category-count">480 Products</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="section" id="featured">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Featured Products</span>
+        <h2 class="section-title">Our Best <span>Sellers</span></h2>
+        <p class="section-sub">High-tech performance meets stunning minimalist aesthetic.</p>
+      </div>
+
+      <!-- Dynamically filled by script.js -->
+      <div class="products-grid" id="featured-products"></div>
+    </div>
+  </section>
+
+  <!-- Deal of the Day Banner Section -->
+  <section class="section">
+    <div class="container">
+      <div class="offer-banner">
+        <div class="offer-banner-content">
+          <div>
+            <span class="badge badge-coral mb-2">LIMITED TIME DEAL</span>
+            <h2 class="hero-title mb-2" style="font-size: clamp(2rem, 4vw, 3rem);">Quantum Leap Flash Sale</h2>
+            <p class="text-muted max-width-500">Get an extra 20% off site-wide on all tech items including our best seller, the Aurora Pro Headphones. Use code <strong>NEXUS20</strong> at checkout.</p>
+            
+            <div class="offer-countdown">
+              <div class="countdown-unit">
+                <div class="countdown-num" id="cd-h">02</div>
+                <div class="countdown-label">Hours</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-num" id="cd-m">34</div>
+                <div class="countdown-label">Mins</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-num" id="cd-s">22</div>
+                <div class="countdown-label">Secs</div>
+              </div>
+            </div>
+
+            <a href="shop.html" class="btn btn-primary mt-2">Shop The Deal</a>
+          </div>
+          <div class="d-none d-lg-block text-center" style="max-width: 400px;">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" alt="Quantum Smartwatch X" class="img-fluid floating-img" style="filter: drop-shadow(0 10px 30px rgba(0,212,255,0.4)); animation: float 3.5s ease-in-out infinite;">
+            <p class="mt-2 fw-bold text-gradient mb-0">Quantum Smartwatch X</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Reviews</span>
+        <h2 class="section-title">What Our <span>Customers</span> Say</h2>
+        <p class="section-sub">We build and sell premium items, backed by thousands of 5-star ratings.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Testimonial 1 -->
+        <div class="testimonial-card">
+          <div class="testimonial-quote">“</div>
+          <p class="testimonial-text">Nexus Store completely exceeded my expectations. The Aurora Pro Headphones have unbelievable sound clarity and the shipping was incredibly fast!</p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Sarah Miller" class="testimonial-avatar">
+            <div>
+              <div class="testimonial-name">Sarah Miller</div>
+              <div class="testimonial-role">Creative Director</div>
+            </div>
+          </div>
+        </div>
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card">
+          <div class="testimonial-quote">“</div>
+          <p class="testimonial-text">The Quantum Smartwatch X is a absolute masterpiece. The interface is clean, battery lasts forever, and the glassmorphism layout matches my overall setup.</p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Alex Rivera" class="testimonial-avatar">
+            <div>
+              <div class="testimonial-name">Alex Rivera</div>
+              <div class="testimonial-role">Tech Lead</div>
+            </div>
+          </div>
+        </div>
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card">
+          <div class="testimonial-quote">“</div>
+          <p class="testimonial-text">Fascinating shopping experience. The dark mode theme with glowing accents makes it extremely satisfying to scroll through products. Will shop again!</p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&q=80" alt="Sophia Chen" class="testimonial-avatar">
+            <div>
+              <div class="testimonial-name">Sophia Chen</div>
+              <div class="testimonial-role">UI/UX Designer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="section">
+    <div class="container">
+      <div class="newsletter-section">
+        <div class="newsletter-inner">
+          <span class="badge badge-primary mb-2">NEWSLETTER</span>
+          <h2 class="section-title">Join The <span>Nexus</span> Orbit</h2>
+          <p class="text-muted mt-2">Subscribe to receive exclusive access to early product drops, limited flash codes, and future updates.</p>
+          <form class="newsletter-form" id="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address..." required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="font-size: 1.8rem;">
+            <i class="fa-solid fa-cube me-2"></i>NEXUS
+          </a>
+          <p>Next-generation futuristic hardware and apparel store curated to enhance your personal orbit.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="footer-col-title">Shop</h4>
+          <div class="footer-col-links">
+            <a href="shop.html?category=Electronics">Electronics</a>
+            <a href="shop.html?category=Fashion">Fashion</a>
+            <a href="shop.html?category=Beauty">Beauty</a>
+            <a href="shop.html?category=Home">Home & Decor</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Company</h4>
+          <div class="footer-col-links">
+            <a href="#">About Us</a>
+            <a href="#">Our Vision</a>
+            <a href="#">Sustainability</a>
+            <a href="#">Contact Careers</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Support</h4>
+          <div class="footer-col-links">
+            <a href="#">Help Center</a>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Returns & Exchanges</a>
+            <a href="#">FAQs</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 NEXUS STORE. All rights reserved. Designed with absolute precision.</div>
+        <div class="payment-icons">
+          <span class="payment-icon">VISA</span>
+          <span class="payment-icon">MC</span>
+          <span class="payment-icon">AMEX</span>
+          <span class="payment-icon">PAYPAL</span>
+          <span class="payment-icon">BTC</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" title="Go to top"><i class="fas fa-chevron-up"></i></button>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Main JavaScript File -->
+  <script src="script.js"></script>
+</body>
+</html>

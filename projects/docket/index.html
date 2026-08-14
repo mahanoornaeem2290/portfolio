@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docket — a to-do ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161b22;
+    --ink-2:#1d232c;
+    --paper:#ede6d6;
+    --paper-dim:#c9c2b1;
+    --amber:#e8a33d;
+    --amber-dim:#a97527;
+    --sage:#7c9885;
+    --rust:#b5533c;
+    --line: rgba(237,230,214,0.12);
+    --line-strong: rgba(237,230,214,0.22);
+    --radius: 3px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(232,163,61,0.06), transparent 60%),
+      var(--ink);
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--amber); color:var(--ink); }
+
+  button{ font-family:inherit; }
+  :focus-visible{ outline:2px solid var(--amber); outline-offset:2px; }
+
+  .app{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    min-height:100vh;
+    max-width:1100px;
+    margin:0 auto;
+  }
+
+  /* ---------- Sidebar: ledger tabs ---------- */
+  .sidebar{
+    border-right:1px solid var(--line);
+    padding:36px 0 36px 28px;
+    display:flex;
+    flex-direction:column;
+    gap:40px;
+  }
+
+  .wordmark{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:26px;
+    letter-spacing:0.01em;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .wordmark .dot{ color:var(--amber); font-size:18px; }
+  .tagline{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--paper-dim);
+    letter-spacing:0.06em;
+    margin-top:4px;
+    text-transform:uppercase;
+  }
+
+  .tabs{ display:flex; flex-direction:column; }
+  .tab{
+    position:relative;
+    text-align:left;
+    background:transparent;
+    border:none;
+    border-top:1px solid var(--line);
+    color:var(--paper-dim);
+    padding:14px 20px 14px 4px;
+    cursor:pointer;
+    font-size:14.5px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    transition:color .15s ease, padding-left .15s ease;
+  }
+  .tab:last-child{ border-bottom:1px solid var(--line); }
+  .tab:hover{ color:var(--paper); padding-left:9px; }
+  .tab .count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--paper-dim);
+  }
+  .tab.active{
+    color:var(--paper);
+    background:linear-gradient(90deg, rgba(232,163,61,0.10), transparent);
+  }
+  .tab.active::before{
+    content:"";
+    position:absolute;
+    left:-1px; top:0; bottom:0;
+    width:3px;
+    background:var(--amber);
+  }
+  .tab.active .count{ color:var(--amber); }
+
+  .sidebar-foot{
+    margin-top:auto;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:rgba(237,230,214,0.28);
+    line-height:1.6;
+  }
+
+  /* ---------- Main ---------- */
+  main{
+    padding:44px 48px 60px;
+    min-width:0;
+  }
+
+  .top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:28px;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .top h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:32px;
+    margin:0;
+    letter-spacing:0.01em;
+  }
+  .top .date{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--paper-dim);
+    margin-top:6px;
+  }
+  .progress-wrap{
+    display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--paper-dim);
+  }
+  .progress-track{
+    width:120px; height:5px;
+    background:var(--line-strong);
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--sage);
+    width:0%;
+    transition:width .35s ease;
+  }
+
+  /* entry line — styled like writing on a ruled line */
+  .entry{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    border-bottom:1.5px solid var(--line-strong);
+    padding-bottom:14px;
+    margin-bottom:8px;
+  }
+  .entry .pencil{
+    flex:none;
+    color:var(--amber-dim);
+  }
+  .entry input[type=text]{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:var(--paper);
+    font-family:'Fraunces', serif;
+    font-size:19px;
+    padding:6px 0;
+  }
+  .entry input[type=text]::placeholder{ color:rgba(237,230,214,0.32); font-family:'IBM Plex Sans', sans-serif; font-size:15px; }
+  .entry input[type=text]:focus-visible{ outline:none; }
+
+  .list-picker{ display:flex; gap:6px; flex:none; }
+  .chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    padding:6px 10px;
+    border-radius:99px;
+    border:1px solid var(--line-strong);
+    background:transparent;
+    color:var(--paper-dim);
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .chip:hover{ border-color:var(--paper-dim); color:var(--paper); }
+  .chip.selected{ background:var(--amber); border-color:var(--amber); color:var(--ink); font-weight:500; }
+
+  .add-btn{
+    flex:none;
+    width:34px; height:34px;
+    border-radius:50%;
+    border:1.5px solid var(--amber-dim);
+    background:transparent;
+    color:var(--amber);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .add-btn:hover{ background:rgba(232,163,61,0.12); }
+  .add-btn:active{ transform:scale(0.94); }
+
+  /* ---------- Task cards ---------- */
+  .list{
+    margin-top:22px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .card{
+    position:relative;
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    animation:settle .28s ease;
+  }
+  @keyframes settle{
+    from{ opacity:0; transform:translateY(-4px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .card::before{
+    /* torn-edge / card-stock feel */
+    content:"";
+    position:absolute; left:0; top:10px; bottom:10px; width:2px;
+    background:var(--line-strong);
+  }
+
+  .check{
+    flex:none;
+    width:22px; height:22px;
+    margin-top:2px;
+    cursor:pointer;
+    background:none;
+    border:none;
+    padding:0;
+  }
+  .check svg{ width:22px; height:22px; overflow:visible; }
+  .check circle{
+    fill:none;
+    stroke:var(--paper-dim);
+    stroke-width:1.6;
+    transition:stroke .15s ease;
+  }
+  .check:hover circle{ stroke:var(--amber); }
+  .check .tick{
+    fill:none;
+    stroke:var(--sage);
+    stroke-width:2.2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:20;
+    stroke-dashoffset:20;
+    transition:stroke-dashoffset .28s ease;
+  }
+  .card.done .check .tick{ stroke-dashoffset:0; }
+  .card.done .check circle{ stroke:var(--sage); }
+
+  .body{ flex:1; min-width:0; }
+  .task-text{
+    font-size:15.5px;
+    color:var(--paper);
+    position:relative;
+    display:inline;
+    line-height:1.5;
+    word-break:break-word;
+  }
+  .strike{
+    position:absolute;
+    left:-2px; right:-2px; top:50%;
+    height:10px;
+    pointer-events:none;
+  }
+  .strike path{
+    fill:none;
+    stroke:var(--paper-dim);
+    stroke-width:1.5;
+    stroke-linecap:round;
+    stroke-dasharray:220;
+    stroke-dashoffset:220;
+    transition:stroke-dashoffset .3s ease .05s;
+  }
+  .card.done .strike path{ stroke-dashoffset:0; }
+  .card.done .task-text{ color:var(--paper-dim); }
+
+  .meta{
+    margin-top:6px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--paper-dim);
+    letter-spacing:0.02em;
+  }
+  .meta .sep{ opacity:0.4; }
+
+  .del{
+    flex:none;
+    background:none;
+    border:none;
+    color:var(--paper-dim);
+    opacity:0;
+    cursor:pointer;
+    font-size:14px;
+    padding:4px 6px;
+    transition:opacity .12s ease, color .12s ease;
+  }
+  .card:hover .del{ opacity:0.7; }
+  .del:hover{ color:var(--rust); opacity:1; }
+
+  .empty{
+    margin-top:40px;
+    padding:36px 20px;
+    text-align:center;
+    border:1px dashed var(--line-strong);
+    border-radius:var(--radius);
+    color:var(--paper-dim);
+    font-size:14px;
+  }
+  .empty .glyph{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    color:var(--amber-dim);
+    display:block;
+    margin-bottom:8px;
+  }
+
+  @media (max-width: 720px){
+    .app{ grid-template-columns:1fr; }
+    .sidebar{
+      border-right:none;
+      border-bottom:1px solid var(--line);
+      padding:24px 20px;
+      gap:20px;
+    }
+    .tabs{ flex-direction:row; flex-wrap:wrap; }
+    .tab{ border:1px solid var(--line); border-radius:99px; padding:8px 14px; gap:8px; }
+    .tab.active::before{ display:none; }
+    .sidebar-foot{ display:none; }
+    main{ padding:28px 20px 40px; }
+    .entry{ flex-wrap:wrap; }
+    .list-picker{ order:3; width:100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div>
+      <div class="wordmark">Docket<span class="dot">.</span></div>
+      <div class="tagline">a running record</div>
+    </div>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-list="today">Today <span class="count" id="count-today">0</span></button>
+      <button class="tab" data-list="upcoming">Upcoming <span class="count" id="count-upcoming">0</span></button>
+      <button class="tab" data-list="someday">Someday <span class="count" id="count-someday">0</span></button>
+      <button class="tab" data-list="done">Archive <span class="count" id="count-done">0</span></button>
+    </nav>
+
+    <div class="sidebar-foot">
+      entries persist for<br>this session only
+    </div>
+  </aside>
+
+  <main>
+    <div class="top">
+      <div>
+        <h1 id="heading">Today</h1>
+        <div class="date" id="date"></div>
+      </div>
+      <div class="progress-wrap">
+        <span id="progress-label">0 / 0 CLEARED</span>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+    </div>
+
+    <form class="entry" id="entry-form">
+      <span class="pencil" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+        </svg>
+      </span>
+      <input type="text" id="task-input" placeholder="Add to the docket…" autocomplete="off" maxlength="140">
+      <div class="list-picker" id="list-picker">
+        <button type="button" class="chip selected" data-list="today">Today</button>
+        <button type="button" class="chip" data-list="upcoming">Upcoming</button>
+        <button type="button" class="chip" data-list="someday">Someday</button>
+      </div>
+      <button type="submit" class="add-btn" aria-label="Add entry">+</button>
+    </form>
+
+    <div class="list" id="list"></div>
+  </main>
+</div>
+
+<script>
+(function(){
+  let tasks = [
+    { id: 1, text: "Sketch the wireframe for the exhibition board", list: "today", done: false },
+    { id: 2, text: "Write the one-line pitch for the project", list: "today", done: true },
+    { id: 3, text: "Reach out to advisor about presentation slot", list: "upcoming", done: false },
+    { id: 4, text: "Explore a second colour direction", list: "someday", done: false },
+  ];
+  let nextId = 5;
+  let activeList = "today";
+  let composeList = "today";
+
+  const listEl = document.getElementById("list");
+  const heading = document.getElementById("heading");
+  const dateEl = document.getElementById("date");
+  const tabsEl = document.getElementById("tabs");
+  const pickerEl = document.getElementById("list-picker");
+  const form = document.getElementById("entry-form");
+  const input = document.getElementById("task-input");
+  const progressFill = document.getElementById("progress-fill");
+  const progressLabel = document.getElementById("progress-label");
+
+  const LABELS = { today:"Today", upcoming:"Upcoming", someday:"Someday", done:"Archive" };
+
+  dateEl.textContent = new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' }).toUpperCase();
+
+  function checkSvg(){
+    return `<svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="9.2"/><path class="tick" d="M6 11.5l3.3 3.3L16.5 7"/></svg>`;
+  }
+  function strikeSvg(){
+    return `<svg class="strike" viewBox="0 0 220 10" preserveAspectRatio="none"><path d="M2 5 Q60 2 110 5 T218 5"/></svg>`;
+  }
+
+  function render(){
+    // counts
+    ["today","upcoming","someday"].forEach(l=>{
+      document.getElementById("count-"+l).textContent = tasks.filter(t=>t.list===l && !t.done).length;
+    });
+    document.getElementById("count-done").textContent = tasks.filter(t=>t.done).length;
+
+    heading.textContent = LABELS[activeList];
+
+    const visible = activeList === "done"
+      ? tasks.filter(t=>t.done)
+      : tasks.filter(t=>t.list===activeList && !t.done);
+
+    // progress (only meaningful outside archive)
+    if(activeList !== "done"){
+      const all = tasks.filter(t=>t.list===activeList);
+      const done = all.filter(t=>t.done).length;
+      progressLabel.textContent = `${done} / ${all.length} CLEARED`;
+      progressFill.style.width = all.length ? (done/all.length*100)+"%" : "0%";
+    } else {
+      progressLabel.textContent = `${tasks.filter(t=>t.done).length} ARCHIVED`;
+      progressFill.style.width = "100%";
+    }
+
+    listEl.innerHTML = "";
+
+    if(visible.length === 0){
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      const msg = activeList === "done"
+        ? "Nothing archived yet. Completed entries land here."
+        : "Nothing docketed. Add the first item above.";
+      empty.innerHTML = `<span class="glyph">—</span>${msg}`;
+      listEl.appendChild(empty);
+      return;
+    }
+
+    visible.forEach(t=>{
+      const card = document.createElement("div");
+      card.className = "card" + (t.done ? " done" : "");
+      card.dataset.id = t.id;
+      card.innerHTML = `
+        <button class="check" aria-label="${t.done ? 'Mark not done' : 'Mark done'}">${checkSvg()}</button>
+        <div class="body">
+          <span class="task-text">${escapeHtml(t.text)}${strikeSvg()}</span>
+          <div class="meta">
+            <span>${LABELS[t.list]}</span>
+            <span class="sep">·</span>
+            <span>#${String(t.id).padStart(3,'0')}</span>
+          </div>
+        </div>
+        <button class="del" aria-label="Delete entry">✕</button>
+      `;
+      card.querySelector(".check").addEventListener("click", ()=>{
+        t.done = !t.done;
+        render();
+      });
+      card.querySelector(".del").addEventListener("click", ()=>{
+        tasks = tasks.filter(x=>x.id!==t.id);
+        render();
+      });
+      listEl.appendChild(card);
+    });
+  }
+
+  function escapeHtml(s){
+    const d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  tabsEl.addEventListener("click", (e)=>{
+    const btn = e.target.closest(".tab");
+    if(!btn) return;
+    activeList = btn.dataset.list;
+    [...tabsEl.children].forEach(c=>c.classList.toggle("active", c===btn));
+    render();
+  });
+
+  pickerEl.addEventListener("click", (e)=>{
+    const btn = e.target.closest(".chip");
+    if(!btn) return;
+    composeList = btn.dataset.list;
+    [...pickerEl.children].forEach(c=>c.classList.toggle("selected", c===btn));
+  });
+
+  form.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const val = input.value.trim();
+    if(!val) return;
+    tasks.push({ id: nextId++, text: val, list: composeList, done:false });
+    input.value = "";
+    if(activeList !== composeList && activeList !== "done"){
+      // jump to the list the new entry was filed under, so it's visible
+      activeList = composeList;
+      [...tabsEl.children].forEach(c=>c.classList.toggle("active", c.dataset.list===composeList));
+    }
+    render();
+    input.focus();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

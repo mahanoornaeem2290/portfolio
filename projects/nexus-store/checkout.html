@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Nexus Store</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader-logo">NEXUS STORE</div>
+    <div class="loader-bar"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-inner container-fluid px-md-5">
+      <a href="index.html" class="nav-logo">
+        <i class="fa-solid fa-cube me-2"></i>NEXUS STORE
+      </a>
+
+      <!-- Search Bar -->
+      <div class="nav-search d-none d-lg-block">
+        <span class="nav-search-icon"><i class="fas fa-search"></i></span>
+        <input type="text" id="nav-search-input" placeholder="Search futuristic products...">
+      </div>
+
+      <!-- Links -->
+      <ul class="nav-links d-none d-lg-flex mb-0 ps-0">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="cart.html" class="nav-link">Cart</a></li>
+        <li><a href="profile.html" class="nav-link">Profile</a></li>
+      </ul>
+
+      <!-- Actions -->
+      <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="nav-btn" title="Toggle Theme">
+          <i class="fas fa-sun"></i>
+        </button>
+
+        <!-- Cart Nav Button -->
+        <a href="cart.html" class="nav-btn cart-nav-btn" title="View Cart">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-badge">0</span>
+        </a>
+
+        <!-- Sign In Button -->
+        <a href="profile.html" class="nav-btn-primary d-none d-sm-inline-block">
+          Sign In
+        </a>
+
+        <!-- Hamburger for Mobile -->
+        <button class="hamburger d-lg-none" aria-label="Toggle Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav">
+    <ul class="ps-0 mb-4">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="shop.html" class="nav-link">Shop</a></li>
+      <li><a href="cart.html" class="nav-link">Cart</a></li>
+      <li><a href="profile.html" class="nav-link">Profile</a></li>
+    </ul>
+    <a href="profile.html" class="btn btn-primary w-100 justify-content-center">Sign In</a>
+  </div>
+
+  <!-- Checkout Page Hero -->
+  <section class="page-hero">
+    <div class="container text-center">
+      <h1 class="page-hero-title mb-2">Secure <span class="text-gradient">Checkout</span></h1>
+      <div class="breadcrumb justify-content-center">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="cart.html">Cart</a>
+        <span>/</span>
+        <a href="checkout.html" class="active" style="color: var(--primary);">Checkout</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Checkout Layout -->
+  <section class="section-sm checkout-wrap">
+    <div class="container">
+      <form id="checkout-form" class="checkout-layout">
+        
+        <!-- Left: Form Sections -->
+        <div>
+          <!-- Shipping Information -->
+          <div class="checkout-form-section">
+            <h3 class="checkout-section-title">
+              <i class="fas fa-map-pin"></i> Shipping Information
+            </h3>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label class="form-label" for="co-name">Full Name</label>
+                <input type="text" id="co-name" class="form-input" placeholder="John Doe" required>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="co-email">Email Address</label>
+                <input type="email" id="co-email" class="form-input" placeholder="john@example.com" required>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="co-address">Street Address</label>
+                <input type="text" id="co-address" class="form-input" placeholder="123 Main Street, Apt 4B" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-city">City</label>
+                <input type="text" id="co-city" class="form-input" placeholder="New York" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-state">State</label>
+                <select id="co-state" class="form-input form-select" required>
+                  <option value="">Select State</option>
+                  <option value="NY">New York</option>
+                  <option value="CA">California</option>
+                  <option value="TX">Texas</option>
+                  <option value="FL">Florida</option>
+                  <option value="IL">Illinois</option>
+                  <option value="WA">Washington</option>
+                  <option value="OR">Oregon</option>
+                  <option value="NV">Nevada</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-zip">ZIP Code</label>
+                <input type="text" id="co-zip" class="form-input" placeholder="10001" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="checkout-form-section">
+            <h3 class="checkout-section-title">
+              <i class="fas fa-credit-card"></i> Payment Method
+            </h3>
+            <div class="payment-options">
+              <label class="payment-option">
+                <input type="radio" name="payment" value="credit-card">
+                <i class="fas fa-credit-card pay-icon" style="color:var(--primary);"></i>
+                <span class="payment-option-name">Credit / Debit Card</span>
+                <span class="payment-option-icons">
+                  <i class="fab fa-cc-visa"></i>
+                  <i class="fab fa-cc-mastercard"></i>
+                  <i class="fab fa-cc-amex"></i>
+                </span>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="payment" value="paypal">
+                <i class="fab fa-paypal pay-icon" style="color:#0070BA;"></i>
+                <span class="payment-option-name">PayPal</span>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="payment" value="crypto">
+                <i class="fab fa-bitcoin pay-icon" style="color:#F7931A;"></i>
+                <span class="payment-option-name">Cryptocurrency</span>
+                <span class="payment-option-icons">
+                  <i class="fab fa-bitcoin"></i>
+                  <i class="fab fa-ethereum"></i>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Card Details (shown when credit card selected) -->
+          <div class="checkout-form-section" id="card-details-section">
+            <h3 class="checkout-section-title">
+              <i class="fas fa-lock"></i> Card Details
+            </h3>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label class="form-label" for="co-card-number">Card Number</label>
+                <input type="text" id="co-card-number" class="form-input" placeholder="4242 4242 4242 4242" maxlength="19">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-expiry">Expiry Date</label>
+                <input type="text" id="co-expiry" class="form-input" placeholder="MM/YY">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="co-cvv">CVV</label>
+                <input type="text" id="co-cvv" class="form-input" placeholder="123" maxlength="4">
+              </div>
+            </div>
+          </div>
+
+          <!-- Place Order -->
+          <button type="submit" class="btn btn-primary btn-full mt-3" style="border-radius:16px; padding:1rem;">
+            <i class="fas fa-check-circle"></i> Place Order Securely
+          </button>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div class="cart-summary">
+          <h3 class="summary-title">Order Summary</h3>
+
+          <div id="checkout-order-items"></div>
+
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="co-sub">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span id="co-ship">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (8%)</span>
+            <span id="co-tax">$0.00</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span id="co-total">$0.00</span>
+          </div>
+
+          <!-- Order Info -->
+          <div class="mt-3" style="border-top:1px solid var(--border); padding-top:1rem;">
+            <div class="product-meta-row mb-2">
+              <i class="fas fa-truck"></i> Free shipping on orders $100+
+            </div>
+            <div class="product-meta-row mb-2">
+              <i class="fas fa-undo"></i> 30-day easy returns
+            </div>
+            <div class="product-meta-row">
+              <i class="fas fa-lock"></i> SSL encrypted checkout
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="font-size: 1.8rem;">
+            <i class="fa-solid fa-cube me-2"></i>NEXUS
+          </a>
+          <p>Next-generation futuristic hardware and apparel store curated to enhance your personal orbit.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="footer-col-title">Shop</h4>
+          <div class="footer-col-links">
+            <a href="shop.html?category=Electronics">Electronics</a>
+            <a href="shop.html?category=Fashion">Fashion</a>
+            <a href="shop.html?category=Beauty">Beauty</a>
+            <a href="shop.html?category=Home">Home & Decor</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Company</h4>
+          <div class="footer-col-links">
+            <a href="#">About Us</a>
+            <a href="#">Our Vision</a>
+            <a href="#">Sustainability</a>
+            <a href="#">Contact Careers</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Support</h4>
+          <div class="footer-col-links">
+            <a href="#">Help Center</a>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Returns & Exchanges</a>
+            <a href="#">FAQs</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 NEXUS STORE. All rights reserved. Designed with absolute precision.</div>
+        <div class="payment-icons">
+          <span class="payment-icon">VISA</span>
+          <span class="payment-icon">MC</span>
+          <span class="payment-icon">AMEX</span>
+          <span class="payment-icon">PAYPAL</span>
+          <span class="payment-icon">BTC</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" title="Go to top"><i class="fas fa-chevron-up"></i></button>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Main JavaScript File -->
+  <script src="script.js"></script>
+</body>
+</html>
